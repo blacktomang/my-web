@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Note from '../../components/marks/Note.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../lib/format';
+
+const entries = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<BaseLayout title="Notes — Syamsul Arifin">
+  <Note />
+  <h1 class="page-title">Notes</h1>
+  <p class="lede">Short reflections, things I'm learning, fragments worth remembering.</p>
+
+  <ul class="post-list">
+    {entries.map(entry => (
+      <li>
+        <a href={`/notes/${entry.id}/`}>{entry.data.title}</a>
+        <p class="meta">{formatDate(entry.data.publishedAt)}</p>
+      </li>
+    ))}
+    {entries.length === 0 && (
+      <li class="empty"><p class="meta">Nothing here yet.</p></li>
+    )}
+  </ul>
+</BaseLayout>
+
+<style>
+  .page-title { margin-top: var(--space-lg); }
+  .lede { color: var(--ink-soft); margin-bottom: var(--space-xl); }
+  .post-list { list-style: none; padding: 0; }
+  .post-list li {
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--rule);
+  }
+  .post-list li:last-child { border-bottom: none; }
+  .post-list a {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .post-list a:hover { color: var(--accent); }
+  .post-list li.empty { border: none; }
+</style>

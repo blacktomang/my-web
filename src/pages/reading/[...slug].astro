@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('reading');
+  return entries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const ratingStars = entry.data.rating
+  ? '★'.repeat(entry.data.rating) + '☆'.repeat(5 - entry.data.rating)
+  : null;
+---
+
+<BaseLayout title={`${entry.data.title} — Reading — Syamsul Arifin`}>
+  <article class="book">
+    <p class="eyebrow"><a href="/reading/">Reading</a></p>
+    <h1>{entry.data.title}</h1>
+    <p class="meta">
+      by {entry.data.author}{ratingStars ? ` · ${ratingStars}` : ''}
+    </p>
+    <div class="book-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .book { margin-top: var(--space-lg); }
+  .book h1 {
+    font-size: 1.85rem;
+    margin: 0.5em 0 0.25em;
+  }
+  .book-body { margin-top: var(--space-md); }
+</style>

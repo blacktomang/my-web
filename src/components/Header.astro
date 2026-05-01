@@ -1,0 +1,226 @@
+---
+const path = Astro.url.pathname;
+const isHome = path === '/' || path === '';
+
+const navItems = [
+  { href: '/writing/', label: 'Writing' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/reading/', label: 'Reading' },
+  { href: '/work/', label: 'Work' },
+  { href: '/about/', label: 'About' },
+];
+
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    {isHome ? (
+      <span class="brand">Syamsul Arifin</span>
+    ) : (
+      <a href="/" class="brand">Syamsul Arifin</a>
+    )}
+
+    <nav class="primary-nav-inline" aria-label="Primary">
+      {navItems.map(item => (
+        <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-haspopup="dialog"
+      aria-controls="nav-dialog"
+    >
+      Menu
+    </button>
+
+    <dialog id="nav-dialog" class="nav-dialog" aria-label="Site navigation">
+      <button type="button" class="nav-close" aria-label="Close menu">
+        Close
+      </button>
+      <nav class="dialog-nav" aria-label="Primary">
+        {navItems.map(item => (
+          <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    </dialog>
+  </div>
+</header>
+
+<script>
+  // Event delegation on `document` survives Astro's View Transition DOM swaps,
+  // so the menu keeps working after every navigation without re-binding.
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const dialog = document.querySelector<HTMLDialogElement>('#nav-dialog');
+    if (!dialog) return;
+
+    if (target.closest('.nav-toggle')) {
+      dialog.showModal();
+      return;
+    }
+    if (target.closest('.nav-close')) {
+      dialog.close();
+      return;
+    }
+    // Click on the dialog element itself = backdrop click
+    if (target === dialog) {
+      dialog.close();
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+  }
+  .site-header-inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-md);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+  .brand {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  a.brand:hover { color: var(--accent); }
+
+  /* Mobile: menu button visible, inline nav hidden */
+  .primary-nav-inline { display: none; }
+
+  .nav-toggle {
+    background: transparent;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+  }
+  .nav-toggle:hover { color: var(--accent); }
+
+  /* Desktop: inline nav visible, menu button hidden */
+  @media (min-width: 720px) {
+    .primary-nav-inline {
+      display: flex;
+      gap: 1.4rem;
+    }
+    .primary-nav-inline a {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      color: var(--ink-soft);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .primary-nav-inline a:hover,
+    .primary-nav-inline a.active {
+      color: var(--accent);
+    }
+
+    .nav-toggle { display: none; }
+  }
+
+  /* Dialog (mobile only) */
+  .nav-dialog {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0;
+    margin: auto;
+    width: min(420px, calc(100% - 2rem));
+    max-width: calc(100% - 2rem);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+    transition:
+      opacity 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  .nav-dialog[open] {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    .nav-dialog[open] {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+  }
+
+  .nav-dialog::backdrop {
+    background: rgba(8, 6, 4, 0.65);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    transition:
+      opacity 220ms ease-out,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  .nav-dialog[open]::backdrop {
+    opacity: 1;
+  }
+  @starting-style {
+    .nav-dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .nav-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: transparent;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+  }
+  .nav-close:hover { color: var(--accent); }
+
+  .dialog-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  }
+  .dialog-nav a {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+  }
+  .dialog-nav a:hover,
+  .dialog-nav a.active {
+    color: var(--accent);
+  }
+</style>

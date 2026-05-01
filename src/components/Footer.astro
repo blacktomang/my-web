@@ -1,0 +1,51 @@
+---
+---
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p class="copy">Syamsul Arifin · {new Date().getFullYear()}</p>
+    <nav class="social" aria-label="Elsewhere">
+      <a href="/now/">Now</a>
+      <a href="https://github.com/" rel="me">GitHub</a>
+      <a href="https://twitter.com/" rel="me">Twitter</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    margin-top: var(--space-xl);
+  }
+  .site-footer-inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-sm) var(--space-md);
+  }
+  .copy {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin: 0;
+    letter-spacing: 0.04em;
+  }
+  .social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+  }
+  .social a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .social a:hover { color: var(--accent); }
+</style>

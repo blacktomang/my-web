@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Ornament from '../components/Ornament.astro';
+---
+
+<BaseLayout title="About — Syamsul Arifin">
+  <article class="essay">
+    <h1>About</h1>
+
+    <div class="essay-body">
+      <p>
+        I'm an engineer based in Indonesia. I work full-stack —
+        TypeScript, Next.js, React Native, Node, Laravel, Flutter —
+        currently at eBuddy on a rent-friend platform.
+      </p>
+
+      <p>
+        The kind of problems I find most satisfying are the
+        boring-sounding ones. Why is the bundle this large. Why is the
+        query this slow. Why did SSR quietly stop working. The wins
+        don't fit on a screenshot, but the user feels them.
+      </p>
+
+      <p>
+        Long before I wrote code, I was a <em>penceramah</em> — an
+        Indonesian word for a public speaker, often religious, who
+        stands in front of an audience and explains. As a child I did
+        this often. It taught me that an idea you can't say out loud is
+        an idea you don't really understand yet. I'm still trying to
+        live up to that.
+      </p>
+
+      <p>
+        This site is my attempt to write more — about software, about
+        books, about thinking carefully when the world rewards the
+        opposite. If you end up here and want to talk, my email is the
+        best way.
+      </p>
+    </div>
+
+    <Ornament />
+
+    <p class="contact meta">
+      Reach me: <a href="mailto:arifprojects76@gmail.com">arifprojects76@gmail.com</a>
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .contact { text-align: center; }
+</style>

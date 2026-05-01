@@ -1,0 +1,41 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Ornament from '../components/Ornament.astro';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  title: string;
+  publishedAt: Date;
+  readingTime?: number;
+  listening?: string;
+  description?: string;
+}
+
+const { title, publishedAt, readingTime, listening, description } = Astro.props;
+---
+
+<BaseLayout title={`${title} — Syamsul Arifin`} description={description}>
+  <article class="essay">
+    <header class="essay-header">
+      <p class="eyebrow"><a href="/writing/">Writing</a></p>
+      <h1>{title}</h1>
+      <p class="meta">
+        {formatDate(publishedAt)}
+        {readingTime ? ` · ${readingTime} min read` : ''}
+      </p>
+    </header>
+
+    <div class="essay-body">
+      <slot />
+    </div>
+
+    {listening && (
+      <footer class="essay-footer">
+        <Ornament />
+        <p class="listening">
+          Written while listening to <em>{listening}</em>
+        </p>
+      </footer>
+    )}
+  </article>
+</BaseLayout>

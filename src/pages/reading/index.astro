@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Book from '../../components/marks/Book.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('reading');
+const reading = all.filter(e => e.data.status === 'reading');
+const finished = all.filter(e => e.data.status === 'finished')
+  .sort((a, b) => (b.data.finishedAt?.valueOf() ?? 0) - (a.data.finishedAt?.valueOf() ?? 0));
+const want = all.filter(e => e.data.status === 'want');
+---
+
+<BaseLayout title="Reading — Syamsul Arifin">
+  <Book />
+  <h1 class="page-title">Reading</h1>
+  <p class="lede">Books I'm with, books I've finished, books I'm circling.</p>
+
+  {reading.length > 0 && (
+    <section>
+      <h2 class="eyebrow">Currently</h2>
+      <ul class="book-list">
+        {reading.map(book => (
+          <li>
+            <a href={`/reading/${book.id}/`}>{book.data.title}</a>
+            <p class="meta">{book.data.author}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {finished.length > 0 && (
+    <section>
+      <h2 class="eyebrow">Finished</h2>
+      <ul class="book-list">
+        {finished.map(book => (
+          <li>
+            <a href={`/reading/${book.id}/`}>{book.data.title}</a>
+            <p class="meta">{book.data.author}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {want.length > 0 && (
+    <section>
+      <h2 class="eyebrow">Want to read</h2>
+      <ul class="book-list plain">
+        {want.map(book => (
+          <li>
+            <span>{book.data.title}</span>
+            <p class="meta">{book.data.author}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {reading.length + finished.length + want.length === 0 && (
+    <p class="meta">Nothing here yet.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .page-title { margin-top: var(--space-lg); }
+  .lede { color: var(--ink-soft); margin-bottom: var(--space-xl); }
+  section + section { margin-top: var(--space-xl); }
+  .book-list { list-style: none; padding: 0; }
+  .book-list li { margin-bottom: var(--space-md); }
+  .book-list a, .book-list span {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .book-list a:hover { color: var(--accent); }
+  .book-list .meta { margin-top: 0.2em; }
+</style>

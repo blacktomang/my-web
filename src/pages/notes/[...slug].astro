@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('notes', ({ data }) => !data.draft);
+  return entries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} — Syamsul Arifin`}>
+  <article class="note">
+    <p class="eyebrow"><a href="/notes/">Notes</a></p>
+    <h1>{entry.data.title}</h1>
+    <p class="meta">{formatDate(entry.data.publishedAt)}</p>
+    <div class="note-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .note { margin-top: var(--space-lg); }
+  .note h1 {
+    font-size: 1.75rem;
+    margin: 0.5em 0 0.25em;
+  }
+  .note-body { margin-top: var(--space-md); }
+</style>

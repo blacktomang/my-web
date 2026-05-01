@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PenNib from '../../components/marks/PenNib.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../lib/format';
+
+const entries = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<BaseLayout title="Writing — Syamsul Arifin">
+  <PenNib />
+  <h1 class="page-title">Writing</h1>
+  <p class="lede">Long-form essays on engineering and the things that surround it.</p>
+
+  <ul class="post-list">
+    {entries.map(entry => (
+      <li>
+        <a href={`/writing/${entry.id}/`}>{entry.data.title}</a>
+        {entry.data.description && (
+          <p class="description">{entry.data.description}</p>
+        )}
+        <p class="meta">
+          {formatDate(entry.data.publishedAt)}
+          {entry.data.readingTime ? ` · ${entry.data.readingTime} min` : ''}
+        </p>
+      </li>
+    ))}
+    {entries.length === 0 && (
+      <li class="empty"><p class="meta">Nothing here yet.</p></li>
+    )}
+  </ul>
+</BaseLayout>
+
+<style>
+  .page-title { margin-top: var(--space-lg); }
+  .lede { color: var(--ink-soft); margin-bottom: var(--space-xl); }
+  .post-list { list-style: none; padding: 0; }
+  .post-list li {
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .post-list li:last-child { border-bottom: none; }
+  .post-list a {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.25;
+  }
+  .post-list a:hover { color: var(--accent); }
+  .description {
+    margin-top: 0.5em;
+    color: var(--ink-soft);
+  }
+  .post-list li.empty { border: none; }
+</style>

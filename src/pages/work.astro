@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Compass from '../components/marks/Compass.astro';
+---
+
+<BaseLayout title="Work — Syamsul Arifin">
+  <Compass />
+  <h1 class="page-title">Work</h1>
+
+  <p class="lede">
+    Five years building things across the stack.
+    A short version follows; ask for details over email.
+  </p>
+
+  <section class="role">
+    <h2>eBuddy <span class="muted">— Fullstack Engineer</span></h2>
+    <p class="meta">Feb 2024 — present</p>
+    <p>
+      Building a rent-friend platform on Next.js, React Native, and Google
+      Cloud Functions. Re-enabled SSR on the web app — previously disabled
+      due to redux-persist — which lifted the SEO score by 50% and reduced
+      the JS bundle. Introduced a new data structure that lets users offer
+      scalable services. Deepened virtualization with TanStack Virtual.
+    </p>
+  </section>
+
+  <section class="role">
+    <h2>Score Campus <span class="muted">— Fullstack Engineer</span></h2>
+    <p class="meta">Dec 2024 — Feb 2025 · Education tech</p>
+    <p>
+      Cut Laravel response times by half through query rewrites.
+      Shipped real-time chat. Integrated Google Calendar with school events.
+    </p>
+  </section>
+
+  <section class="role">
+    <h2>Tjal Technology Studio <span class="muted">— Frontend Engineer</span></h2>
+    <p class="meta">Nov 2022 — Nov 2024 · Software house</p>
+    <p>
+      Led frontend on marketplace projects (React for customers, Angular
+      for merchants). Built an auto-publishing API to Instagram and
+      Facebook on Node and MongoDB. Mentored junior frontend engineers.
+    </p>
+  </section>
+
+  <section class="role">
+    <h2>Alfathtech <span class="muted">— Software Engineer</span></h2>
+    <p class="meta">Aug 2021 — Aug 2022 · Malang</p>
+    <p>
+      Full-stack work across e-commerce, payment integrations (Midtrans),
+      delivery APIs (RajaOngkir), and Flutter mobile apps with Firebase OTP.
+    </p>
+  </section>
+
+  <section class="role">
+    <h2>Fishlog <span class="muted">— Frontend Intern</span></h2>
+    <p class="meta">Jun 2021 — Aug 2021 · Marketplace startup</p>
+    <p>
+      Built admin dashboards in React and Lumen, improved Next.js
+      performance across products, contributed to a Plaid payment
+      integration discussion.
+    </p>
+  </section>
+
+  <p class="contact meta">
+    For longer conversations:
+    <a href="mailto:arifprojects76@gmail.com">arifprojects76@gmail.com</a>
+  </p>
+</BaseLayout>
+
+<style>
+  .page-title { margin-top: var(--space-lg); }
+  .lede { color: var(--ink-soft); margin-bottom: var(--space-xl); }
+  .role + .role { margin-top: var(--space-lg); }
+  .role h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 500;
+  }
+  .role .muted {
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .role .meta {
+    margin: 0.25em 0 0.75em;
+  }
+  .contact {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--rule);
+  }
+</style>

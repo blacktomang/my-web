@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatMonth } from '../lib/format';
+
+const updated = new Date('2026-05-01');
+---
+
+<BaseLayout title="Now — Syamsul Arifin">
+  <h1 class="page-title">Now</h1>
+  <p class="meta">Updated {formatMonth(updated)}</p>
+
+  <section>
+    <h2 class="eyebrow">Working on</h2>
+    <ul>
+      <li>Building features at eBuddy on the rent-friend web and mobile apps.</li>
+      <li>Setting up this writing site as a long-term home base.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="eyebrow">Learning</h2>
+    <ul>
+      <li>Writing — taking my first writing class.</li>
+      <li>Reading more, slowly. Trying to leave notes other people would find useful.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="eyebrow">Inspired by</h2>
+    <p>
+      The <a href="https://nownownow.com/about" rel="noopener">/now page</a>
+      tradition started by Derek Sivers — a single page that says what someone
+      is doing this month, kept honest by being public.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-title { margin-top: var(--space-lg); margin-bottom: 0.25em; }
+  section { margin-top: var(--space-lg); }
+  ul { padding-left: 1.25rem; }
+  li { margin-bottom: 0.4em; }
+</style>

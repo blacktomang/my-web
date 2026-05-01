@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../lib/format';
+
+const writingEntries = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 4);
+
+const readingNow = (await getCollection('reading'))
+  .filter(e => e.data.status === 'reading')
+  .slice(0, 3);
+---
+
+<BaseLayout title="Syamsul Arifin">
+  {/* TODO: rewrite this in your own voice. This is a placeholder so the page isn't empty. */}
+  <section class="lede">
+    <p>
+      I'm Syam, a software engineer at eBuddy.
+      I've been meaning to write more about the work, so I built this place as a reason to.
+    </p>
+  </section>
+
+  {writingEntries.length > 0 && (
+    <section>
+      <h2 class="eyebrow">Recent writing</h2>
+      <ul class="post-list">
+        {writingEntries.map(entry => (
+          <li>
+            <a href={`/writing/${entry.id}/`}>{entry.data.title}</a>
+            <p class="meta">
+              {formatDate(entry.data.publishedAt)}
+              {entry.data.readingTime ? ` · ${entry.data.readingTime} min` : ''}
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p><a href="/writing/" class="quiet">All writing →</a></p>
+    </section>
+  )}
+
+  {readingNow.length > 0 && (
+    <section>
+      <h2 class="eyebrow">Reading now</h2>
+      <ul class="book-list">
+        {readingNow.map(entry => (
+          <li>
+            <a href={`/reading/${entry.id}/`}>{entry.data.title}</a>
+            <p class="meta">{entry.data.author}</p>
+          </li>
+        ))}
+      </ul>
+      <p><a href="/reading/" class="quiet">All reading →</a></p>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .lede {
+    margin: var(--space-lg) 0 var(--space-xl);
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .lede p { margin: 0; }
+
+  section + section { margin-top: var(--space-xl); }
+
+  .post-list, .book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .post-list li, .book-list li {
+    margin-bottom: var(--space-md);
+  }
+  .post-list a, .book-list a {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.3;
+  }
+  .post-list a:hover, .book-list a:hover { color: var(--accent); }
+  .post-list .meta, .book-list .meta { margin-top: 0.25em; }
+
+  .quiet {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  .quiet:hover { color: var(--accent); }
+</style>
