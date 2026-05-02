@@ -1,15 +1,25 @@
 ---
+// Edit this line by hand whenever the situation changes.
+// The month stamp at the end makes staleness visible if you forget.
+const currently = "drafting essays I've been meaning to write — May 2026";
 ---
 
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p class="copy">Syamsul Arifin · {new Date().getFullYear()}</p>
-    <nav class="social" aria-label="Elsewhere">
-      <a href="/now/">Now</a>
-      <a href="https://github.com/" rel="me">GitHub</a>
-      <a href="https://twitter.com/" rel="me">Twitter</a>
-      <a href="/rss.xml">RSS</a>
-    </nav>
+    <p class="currently">
+      <span class="currently-label">Currently</span>
+      <span class="currently-text">{currently}</span>
+    </p>
+
+    <div class="footer-row">
+      <p class="copy">Syamsul Arifin · {new Date().getFullYear()}</p>
+      <nav class="social" aria-label="Elsewhere">
+        <a href="/now/">Now</a>
+        <a href="https://github.com/" rel="me">GitHub</a>
+        <a href="https://twitter.com/" rel="me">Twitter</a>
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </div>
   </div>
 </footer>
 
@@ -23,10 +33,38 @@
     margin: 0 auto;
     padding: var(--space-lg) var(--space-md);
     display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .currently {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--ink);
+    margin: 0;
+  }
+  .currently-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-right: 0.6em;
+    vertical-align: 0.1em;
+  }
+  .currently-text {
+    font-style: italic;
+  }
+
+  .footer-row {
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
     gap: var(--space-sm) var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--rule);
   }
   .copy {
     font-family: var(--font-mono);
