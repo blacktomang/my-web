@@ -2,7 +2,7 @@
 
 ## Project overview
 
-This repository is Syamsul Arifin's personal site. It is built with Astro 5 and TypeScript, uses MDX content collections, and is deployed to Cloudflare Workers via the Astro Cloudflare adapter and Wrangler.
+This repository is Syamsul Arifin's personal site. It is built with Astro 5 and TypeScript, uses MDX content collections, and is published as a static site on GitHub Pages.
 
 The site has three content sections:
 
@@ -21,11 +21,9 @@ pnpm install
 pnpm dev
 pnpm build
 pnpm preview
-pnpm deploy
-pnpm cf-typegen
 ```
 
-`pnpm build` runs `astro check` before the production build. Run it after source, configuration, or content-schema changes. `preview` and `deploy` build first and then invoke Wrangler; do not deploy unless explicitly requested.
+`pnpm build` runs `astro check` before the production build. Run it after source, configuration, or content-schema changes. `preview` builds first and then serves the static production output locally.
 
 ## Code and design conventions
 
@@ -39,7 +37,7 @@ pnpm cf-typegen
 
 ## Deployment and generated files
 
-- `astro.config.mjs` sets the production site URL, MDX/sitemap integrations, and Cloudflare adapter.
-- `wrangler.jsonc` configures the Workers entry point and static `dist/` assets.
-- Do not edit generated `dist/`, `.astro/`, `worker-configuration.d.ts`, `node_modules/`, or `.wrangler/` output. `dist/` and `.astro/` are already ignored.
-- Keep credentials out of the repository. Use local ignored `.env`/`.dev.vars` files when needed.
+- `astro.config.mjs` explicitly selects static output and sets the public GitHub Pages URL. Update `site` when adding a custom domain.
+- `.github/workflows/deploy.yml` builds and deploys `dist/` whenever `main` changes. Do not manually deploy from a local machine.
+- Do not edit generated `dist/`, `.astro/`, or `node_modules/` output. `dist/` and `.astro/` are already ignored.
+- Keep credentials out of the repository. Use local ignored `.env` files when needed.
