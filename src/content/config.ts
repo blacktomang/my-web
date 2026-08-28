@@ -47,4 +47,18 @@ const experience = defineCollection({
   }),
 });
 
-export const collections = { writing, notes, reading, experience };
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    url: z.string().url().optional(),
+    repo: z.string().url().optional(),
+    image: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    featured: z.boolean().default(false),
+    publishedAt: z.coerce.date(),
+  }),
+});
+
+export const collections = { writing, notes, reading, experience, projects };

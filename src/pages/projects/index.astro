@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Compass from '../../components/marks/Compass.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../lib/format';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<BaseLayout title="Projects | Syamsul Arifin">
+  <Compass />
+  <h1 class="page-title">Projects</h1>
+
+  <p class="lede">
+    Things I've built outside a day job. Screenshots where I have them;
+    links where the thing is live.
+  </p>
+
+  {projects.length > 0 ? (
+    <div class="project-list">
+      {projects.map(project => (
+        <article class="project">
+          {project.data.image && (
+            <img
+              src={project.data.image}
+              alt={project.data.title}
+              loading="lazy"
+            />
+          )}
+          <h2>
+            {project.data.url
+              ? <a href={project.data.url} rel="noopener">{project.data.title}</a>
+              : project.data.title}
+          </h2>
+          <p class="description">{project.data.description}</p>
+          {project.data.tags.length > 0 && (
+            <p class="meta tags">{project.data.tags.join(' · ')}</p>
+          )}
+          <p class="meta">
+            {formatDate(project.data.publishedAt)}
+            {project.data.repo && (
+              <>
+                {' · '}
+                <a href={project.data.repo} rel="noopener">source</a>
+              </>
+            )}
+          </p>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <p class="meta">Nothing here yet.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .page-title { margin-top: var(--space-lg); }
+  .lede { color: var(--ink-soft); margin-bottom: var(--space-xl); }
+
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .project img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    margin-bottom: var(--space-md);
+  }
+
+  .project h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 0.25em;
+  }
+  .project h2 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .project h2 a:hover { color: var(--accent); }
+
+  .project .description {
+    color: var(--ink);
+    margin: 0 0 var(--space-md);
+    line-height: 1.5;
+  }
+
+  .project .tags {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+  }
+</style>

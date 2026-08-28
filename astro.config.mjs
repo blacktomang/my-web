@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://blacktomang.github.io',
+  site: 'https://syamarif.my.id',
   output: 'static',
   integrations: [mdx(), sitemap()],
   prefetch: {
