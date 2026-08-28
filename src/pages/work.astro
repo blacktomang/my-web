@@ -1,9 +1,26 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Compass from '../components/marks/Compass.astro';
+import { getCollection, render } from 'astro:content';
+
+const formatRoleDate = (date: Date) => date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+});
+
+const experienceEntries = (await getCollection('experience'))
+  .sort((a, b) => {
+    const currentFirst = Number(!b.data.endedAt) - Number(!a.data.endedAt);
+    return currentFirst || b.data.startedAt.valueOf() - a.data.startedAt.valueOf();
+  });
+
+const roles = await Promise.all(experienceEntries.map(async entry => ({
+  ...entry.data,
+  Content: (await render(entry)).Content,
+})));
 ---
 
-<BaseLayout title="Work — Syamsul Arifin">
+<BaseLayout title="Work | Syamsul Arifin">
   <Compass />
   <h1 class="page-title">Work</h1>
 
@@ -12,55 +29,16 @@ import Compass from '../components/marks/Compass.astro';
     A short version follows; ask for details over email.
   </p>
 
-  <section class="role">
-    <h2>eBuddy <span class="muted">— Fullstack Engineer</span></h2>
-    <p class="meta">Feb 2024 — present</p>
-    <p>
-      Building a rent-friend platform on Next.js, React Native, and Google
-      Cloud Functions. Re-enabled SSR on the web app — previously disabled
-      due to redux-persist — which lifted the SEO score by 50% and reduced
-      the JS bundle. Introduced a new data structure that lets users offer
-      scalable services. Deepened virtualization with TanStack Virtual.
-    </p>
-  </section>
-
-  <section class="role">
-    <h2>Score Campus <span class="muted">— Fullstack Engineer</span></h2>
-    <p class="meta">Dec 2024 — Feb 2025 · Education tech</p>
-    <p>
-      Cut Laravel response times by half through query rewrites.
-      Shipped real-time chat. Integrated Google Calendar with school events.
-    </p>
-  </section>
-
-  <section class="role">
-    <h2>Tjal Technology Studio <span class="muted">— Frontend Engineer</span></h2>
-    <p class="meta">Nov 2022 — Nov 2024 · Software house</p>
-    <p>
-      Led frontend on marketplace projects (React for customers, Angular
-      for merchants). Built an auto-publishing API to Instagram and
-      Facebook on Node and MongoDB. Mentored junior frontend engineers.
-    </p>
-  </section>
-
-  <section class="role">
-    <h2>Alfathtech <span class="muted">— Software Engineer</span></h2>
-    <p class="meta">Aug 2021 — Aug 2022 · Malang</p>
-    <p>
-      Full-stack work across e-commerce, payment integrations (Midtrans),
-      delivery APIs (RajaOngkir), and Flutter mobile apps with Firebase OTP.
-    </p>
-  </section>
-
-  <section class="role">
-    <h2>Fishlog <span class="muted">— Frontend Intern</span></h2>
-    <p class="meta">Jun 2021 — Aug 2021 · Marketplace startup</p>
-    <p>
-      Built admin dashboards in React and Lumen, improved Next.js
-      performance across products, contributed to a Plaid payment
-      integration discussion.
-    </p>
-  </section>
+  {roles.map(role => (
+    <section class="role">
+      <h2>{role.company} <span class="muted">/ {role.role}</span></h2>
+      <p class="meta">
+        {formatRoleDate(role.startedAt)} to {role.endedAt ? formatRoleDate(role.endedAt) : 'present'}
+        {role.context && ` · ${role.context}`}
+      </p>
+      <role.Content />
+    </section>
+  ))}
 
   <p class="contact meta">
     For longer conversations:

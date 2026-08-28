@@ -15,7 +15,7 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<BaseLayout title={`${entry.data.title} — Syamsul Arifin`}>
+<BaseLayout title={`${entry.data.title} | Syamsul Arifin`}>
   <article class="note">
     <p class="eyebrow"><a href="/notes/">Notes</a></p>
     <h1>{entry.data.title}</h1>

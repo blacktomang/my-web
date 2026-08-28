@@ -4,13 +4,30 @@
 
 This repository is Syamsul Arifin's personal site. It is built with Astro 5 and TypeScript, uses MDX content collections, and is published as a static site on GitHub Pages.
 
-The site has three content sections:
+The site has four content sections:
 
-- `src/content/writing/` — long-form posts; drafts are hidden from listings and RSS.
-- `src/content/notes/` — short notes; drafts are hidden from listings.
-- `src/content/reading/` — reading entries and their status.
+- `src/content/writing/`: long-form posts; drafts are hidden from listings and RSS.
+- `src/content/notes/`: short notes; drafts are hidden from listings.
+- `src/content/reading/`: reading entries and their status.
+- `src/content/experience/`: one MDX entry per work role; the work page renders these automatically.
 
 Their required frontmatter and allowed fields are defined in `src/content/config.ts`. Update that schema whenever a content field changes.
+
+## Scoped content updates
+
+For a content-only request, load only the target content file and `src/content/config.ts`; do not read unrelated pages, layouts, or content. Run `pnpm build` after every content change.
+
+| Request | Read and edit |
+| --- | --- |
+| New or updated long-form article | `src/content/writing/<slug>.mdx` |
+| New or updated note | `src/content/notes/<slug>.mdx` |
+| Reading status, rating, or notes | `src/content/reading/<slug>.mdx` |
+| Work experience | `src/content/experience/<company-slug>.mdx` |
+| Biography or current-status copy | the named file in `src/pages/` |
+
+Existing experience slugs are `ebuddy`, `score-campus`, `tjal-technology-studio`, `alfathtech`, and `fishlog`. To mark a role as finished, set `endedAt` to the supplied final month; do not guess missing dates. Do not edit `src/pages/work.astro` for a content-only experience update.
+
+Only commit and push when the user explicitly asks to publish. A push to `main` deploys the static site through GitHub Pages.
 
 ## Tooling and commands
 
@@ -24,6 +41,10 @@ pnpm preview
 ```
 
 `pnpm build` runs `astro check` before the production build. Run it after source, configuration, or content-schema changes. `preview` builds first and then serves the static production output locally.
+
+## Writing conventions
+
+- Never use em dashes (`—`) in generated content. Use commas, parentheses, periods, or colons instead.
 
 ## Code and design conventions
 

@@ -36,4 +36,15 @@ const reading = defineCollection({
   }),
 });
 
-export const collections = { writing, notes, reading };
+const experience = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/experience' }),
+  schema: z.object({
+    company: z.string(),
+    role: z.string(),
+    startedAt: z.coerce.date(),
+    endedAt: z.coerce.date().optional(),
+    context: z.string().optional(),
+  }),
+});
+
+export const collections = { writing, notes, reading, experience };

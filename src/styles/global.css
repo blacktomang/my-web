@@ -38,7 +38,7 @@ html {
   font-optical-sizing: auto;
 }
 
-/* Paper grain — subtle noise texture for tactile feel */
+/* Paper grain: subtle noise texture for tactile feel */
 body::after {
   content: '';
   position: fixed;
@@ -50,7 +50,7 @@ body::after {
   mix-blend-mode: overlay;
 }
 
-/* Reading-lamp glow — single warm halo at the top of the viewport */
+/* Reading-lamp glow: single warm halo at the top of the viewport */
 body::before {
   content: '';
   position: fixed;
@@ -207,7 +207,7 @@ img { max-width: 100%; height: auto; }
   margin-top: 0;
 }
 
-/* Section marks — draw themselves in on page load */
+/* Section marks: draw themselves in on page load */
 @media (prefers-reduced-motion: no-preference) {
   .section-mark path,
   .section-mark line,
@@ -226,7 +226,7 @@ img { max-width: 100%; height: auto; }
   to { stroke-dashoffset: 0; }
 }
 
-/* Motion — View Transitions handle page entrance, no extra fade needed */
+/* Motion: View Transitions handle page entrance, no extra fade needed */
 
 @media (prefers-reduced-motion: reduce) {
   *,

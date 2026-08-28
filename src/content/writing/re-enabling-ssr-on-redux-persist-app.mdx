@@ -3,7 +3,7 @@ title: "Re-enabling SSR on a Next.js app trapped behind redux-persist"
 description: "How a single library quietly disabled server rendering for an entire app, and what we did about it."
 publishedAt: 2026-04-15
 readingTime: 8
-listening: "Brian Eno — Music for Airports"
+listening: "Brian Eno, Music for Airports"
 ---
 
 import Pullquote from '../../components/Pullquote.astro';
@@ -18,7 +18,7 @@ This is the story of one of those.
 ## The setup
 
 We had a Next.js app at eBuddy that needed offline-friendly state on the
-client. Someone — me, eventually — reached for `redux-persist`. It works,
+client. Someone (me, eventually) reached for `redux-persist`. It works,
 it's familiar, and it gets the job done. The catch is that
 `redux-persist` writes to `localStorage`, and `localStorage` does not
 exist on the server. The standard workaround is to wrap the app in a
@@ -31,7 +31,7 @@ the listings, none of the SEO-relevant content was reaching crawlers.
 
 ## The fix
 
-The fix is not to remove `redux-persist` — it earns its keep on the
+The fix is not to remove `redux-persist`; it earns its keep on the
 client. The fix is to keep state hydration off the critical path so the
 server can still render the parts that matter.
 
@@ -41,7 +41,7 @@ that some state arrives a beat late on the client. The render-blank
 moment on first paint is gone.
 
 The SEO score lifted by 50%. The JS bundle shrank. Nothing about the
-user-facing experience felt different — which is the whole point.
+user-facing experience felt different, which is the whole point.
 
 <Pullquote>There is no such thing as a neutral dependency.</Pullquote>
 

@@ -8,7 +8,7 @@ const entries = (await getCollection('writing', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
 
-<BaseLayout title="Writing — Syamsul Arifin">
+<BaseLayout title="Writing | Syamsul Arifin">
   <PenNib />
   <h1 class="page-title">Writing</h1>
   <p class="lede">Long-form essays on engineering and the things that surround it.</p>
